@@ -8,12 +8,12 @@ class MyDocument extends Document {
     //docoument ini bergunan untuk memanipulasi standart html dan bisa kita tamabahkan claas css pada body
     render() {
         return (
-            <Html>
+            <Html >
                 <Head>
                     <link rel="preconnect" href="https://fonts.gstatic.com" />
                     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet" />
                 </Head>
-                <body className="antialiased bg-blue-50">
+                <body className="antialiased bg-blue-50 dark:bg-gray-900">
                     <Main />
                     <NextScript />
                 </body>

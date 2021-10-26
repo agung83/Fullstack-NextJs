@@ -13,7 +13,7 @@ module.exports = {
   },
   // useFileSystemPublicRoutes: false,
   webpack: (config, { dev, isServer }) => {
-    // Replace React with Preact only in client production build
+    // ketika yarn build makan kita ganti react menjadi preact, kenapa preact karna preact ukuran nya leih kecil dari react asli
     if (!dev && !isServer) {
       Object.assign(config.resolve.alias, {
         react: 'preact/compat',
@@ -25,4 +25,5 @@ module.exports = {
     return config;
   },
 
+  // reactStrictMode: false,
 }

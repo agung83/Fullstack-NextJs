@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "export" : "next export",
     "start": "NODE_ENV=production node server.js",
     "lint": "next lint",
     "knex": "knex"
@@ -13,9 +14,11 @@
     "@headlessui/react": "^1.4.0",
     "@heroicons/react": "^1.0.3",
     "autoprefixer": "^10.3.1",
+    "dotenv-cli": "^4.0.0",
     "knex": "^0.21.20",
     "mysql": "^2.18.1",
     "next": "11.0.1",
+    "next-themes": "^0.0.15",
     "postcss": "^8.3.6",
     "preact": "^10.5.14",
     "react": "17.0.2",

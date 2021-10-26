@@ -1,7 +1,8 @@
 /* This example requires Tailwind CSS v2.0+ */
+
 import Image from 'next/image'
 import Link from 'next/link'
-import { Fragment } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import {
     BookmarkAltIcon,
@@ -18,6 +19,7 @@ import {
     XIcon,
 } from '@heroicons/react/outline'
 import { ChevronDownIcon } from '@heroicons/react/solid'
+import { useTheme } from 'next-themes'
 
 const solutions = [
     {
@@ -38,6 +40,30 @@ const solutions = [
         description: "Connect with third-party tools that you're already using.",
         href: '/about',
         icon: ViewGridIcon,
+    },
+    {
+        name: 'Automations',
+        description: 'Build strategic funnels that will drive your customers to convert',
+        href: '/about',
+        icon: RefreshIcon,
+    },
+    {
+        name: 'Automations',
+        description: 'Build strategic funnels that will drive your customers to convert',
+        href: '/about',
+        icon: RefreshIcon,
+    },
+    {
+        name: 'Automations',
+        description: 'Build strategic funnels that will drive your customers to convert',
+        href: '/about',
+        icon: RefreshIcon,
+    },
+    {
+        name: 'Automations',
+        description: 'Build strategic funnels that will drive your customers to convert',
+        href: '/about',
+        icon: RefreshIcon,
     },
     {
         name: 'Automations',
@@ -82,10 +108,25 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+    const { theme, setTheme } = useTheme()
+
+    const [isMounted, setIsMounted] = useState(false);
+
+    const switchTheme = () => {
+        console.log(theme)
+        if (isMounted) {
+            setTheme(theme === "light" ? "dark" : "light");
+        }
+    };
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
     return (
-        <Popover className="bg-white sticky top-0 ">
+        <Popover className="bg-white dark:bg-gray-900 sticky top-0 z-50 ">
             <div className="mx-auto px-4 sm:px-6">
-                <div className="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
+                <div className="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10 dark:border-gray-700">
                     <div className="flex justify-start lg:w-0 lg:flex-1">
                         <Link href="/">
                             <a className="md:ml-10 lg:ml-10">
@@ -104,17 +145,17 @@ export default function Navbar() {
                     </div>
                     <Popover.Group as="nav" className="hidden md:flex space-x-10">
                         <Link href="/about">
-                            <a className="text-base font-semibold  text-blue-500 hover:text-gray-900 ">
+                            <a className="text-base font-semibold  text-blue-500 hover:text-gray-900 dark:text-white">
                                 Beranda
                             </a>
                         </Link>
-                        <Popover className="relative">
+                        <Popover className="relative ">
                             {({ open }) => (
                                 <>
                                     <Popover.Button
                                         className={classNames(
                                             open ? 'text-gray-900' : 'text-blue-500',
-                                            'group bg-white rounded-md inline-flex items-center font-semibold hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                                            'group bg-white rounded-md inline-flex items-center font-semibold hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-gray-900 dark:text-white'
                                         )}
                                     >
                                         <span>Informasi</span>
@@ -138,7 +179,7 @@ export default function Navbar() {
                                     >
                                         <Popover.Panel className="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2">
                                             <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
-                                                <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
+                                                <div className="relative overflow-auto h-96 grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
                                                     {solutions.map((item) => (
                                                         <Link
                                                             key={item.name}
@@ -182,7 +223,7 @@ export default function Navbar() {
                                     <Popover.Button
                                         className={classNames(
                                             open ? 'text-gray-900' : 'text-blue-500',
-                                            'group bg-white rounded-md inline-flex items-center text-base font-semibold  hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                                            'group bg-white rounded-md inline-flex items-center text-base font-semibold  hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-gray-900 dark:text-white'
                                         )}
                                     >
                                         <span>Perankingan</span>
@@ -258,27 +299,29 @@ export default function Navbar() {
                         </Popover>
 
                         <Link href="/about">
-                            <a className="text-base font-semibold  text-blue-500 hover:text-gray-900">
+                            <a className="text-base font-semibold  text-blue-500 hover:text-gray-900 dark:text-white">
                                 Statistik
                             </a>
                         </Link>
 
                         <Link href="/about">
-                            <a className=" text-base font-semibold  text-blue-500 hover:text-gray-900 ">
+                            <a className=" text-base font-semibold  text-blue-500 hover:text-gray-900 dark:text-white">
                                 Bantuan
                             </a>
                         </Link>
 
-
-
-
                     </Popover.Group>
-                    <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
+                    <div className="hidden md:flex items-center  justify-end md:flex-1 lg:w-0">
+                        <button onClick={switchTheme} className="pr-6 transform transition duration-300 hover:scale-110" >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                            </svg>
+                        </button>
 
                         <Link href="/register">
                             <a
 
-                                className="whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-blue-500 hover:bg-indigo-700"
+                                className="whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-blue-500 hover:bg-indigo-700 dark:bg-gray-700"
                             >
 
                                 Daftar
@@ -287,7 +330,7 @@ export default function Navbar() {
                         <Link href="/login">
                             <a
 
-                                className="ml-2 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-blue-500 hover:bg-indigo-700"
+                                className="ml-2 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-blue-500 hover:bg-indigo-700 dark:bg-gray-700"
                             >
                                 Login
                             </a>
@@ -325,9 +368,9 @@ export default function Navbar() {
                             </div>
                             <div className="mt-6">
                                 <nav className="grid gap-y-8">
-                                    {solutions.map((item) => (
+                                    {solutions.map((item, index) => (
                                         <Link
-                                            key={item.name}
+                                            key={index}
                                             href={item.href}
 
                                         >

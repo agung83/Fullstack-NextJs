@@ -1,67 +1,117 @@
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react"
 import Layout from "components/Layout"
-import Image from "next/image"
+import TableData from "components/utils/table/TableData"
+import Pagination from 'components/utils/pagination/Pagination'
 
 
 const columns = [
     {
 
         head: 'No',
-        className: 'p-3 text-left'
+        className: 'p-3 border text-center'
     },
     {
 
         head: 'Sekolah',
-        className: 'p-3 text-left'
+        className: 'p-3 border text-center'
     },
     {
 
         head: 'Alamat',
-        className: 'p-3 text-left'
+        className: 'p-3 border text-center'
     },
     {
         head: 'Zonasi',
-        className: 'p-3 text-left'
+        className: 'p-3 border text-center'
     }
-]
-
-const data = [
-    { 'id': 1, 'sekolah': 'SMA NEGERI 2 SIKAKAP', 'alamat': 'Jln. Trans Taikako, Taikako, Sikakap, Kepulauan Mentawai, Sumatera Barat', 'zonasi': '<div style="background-color : red; border-radius : 10px"> tidak ada zonasi</div> ' },
-
 
 ]
 
 
-export default function sekolah() {
+
+const Sekolah = () => {
+    // console.log('render sekolah')
+    const [Datasekolah, setData] = useState([]);
+    const [Page, setPage] = useState(1)
+    const [Totalpages, setTotalPages] = useState(0);
+
+
+
+    useEffect(() => {
+        const GetData = async () => {
+            try {
+                const formdata = new FormData()
+                formdata.append('page', Page)
+                const res = await fetch(`https://ppdb.sumbarprov.go.id/api/ppdbdata/services/get_sekolah`, {
+                    method: "POST",
+                    body: formdata
+                })
+                const data = await res.json()
+                let emptyArray = [];
+                data.result.forEach((element) => {
+
+                    let dataCustome = {
+                        no: element.no,
+                        nama_sekolah: element.nama_sekolah,
+                        alamat: element.alamat,
+                        zonasi: 'tidak ada zonasi'
+                    }
+
+                    emptyArray.push(dataCustome)
+
+                });
+                setTotalPages(data.total_pages)
+                setData(emptyArray)
+                return true
+
+            } catch (e) {
+                console.log(e)
+            }
+        }
+
+        GetData();
+    }, [Page])
+
+
+
+    // const Table = useMemo(() => TableData, [])
+
+    const Nextpaginate = useCallback((pageNumber) => setPage(pageNumber), [])
+
+    //apa perbedaan fungsi di atas dengan di bawah bukan nya sama saja, perbedaan nya adalah ketika kita mengunakan useCallBack bawaan hook maka componenst paginatio tidak akan di render ulang
+
+    //change page
+    // const Nextpaginate = pageNumber => {
+    //     setPage(pageNumber)
+    // }
+
+    const ShowAlert = useCallback((id) => setPage(id), [])
+
+
+    // const ShowAlert = id => {
+    //     alert(id)
+    //     console.log(id)
+    // }
+
     return (
         <Layout title="Sekolah">
             <div className="container bg-white mt-10 px-4 py-4 rounded-lg border-blue-200">
+                <TableData
+                    columns={columns}
+                    data={Datasekolah}
+                    title="Data Sekolah"
+                    ShowAlert={ShowAlert}
+                />
 
-
-                <div className="box border-t-2  px-10 py-10 md:px-20 lg:px-20 bg-white  border-yellow-200  dark:bg-gray-800 rounded-xl shadow-lg">
-
-                    <div className="flex justify-between mb-2">
-                        <div className=""><p className="text-sm md:text-xl lg:text-xl">SMA NEGERI 1 PADANG</p></div>
-                        <div className=""><svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                        </svg>    </div>
-                    </div>
-                    <p className="text-sm md:text-lg lg:text-lg"> Jln. Trans Taikako, Taikako, Sikakap, Kepulauan Mentawai, Sumatera Barat</p>
-
-                    <div className="mt-3 flex items-center">
-                        <div><p className="text-lg ">Zonasi  </p></div>
-                        <div>:</div>
-                        <div><p className="text-lg text-center"> <span className="bg-red-400"> tidak ada zonasi</span>
-                        </p></div>
-                    </div>
-                    <div className="mt-3">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, fugit. Illo accusamus nulla placeat sequi, eligendi libero nisi dolores officia, nemo eaque consequuntur architecto. Ratione odio possimus officiis magni totam.
-                    </div>
-
-
-                </div>
-
-
+                <Pagination
+                    totalPages={Totalpages}
+                    paginate={Nextpaginate}
+                    Page={Page}
+                />
             </div>
         </Layout>
     )
 }
+
+
+export default Sekolah

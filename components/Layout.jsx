@@ -3,7 +3,9 @@ import Head from 'next/head'
 import Navbar from './Navbar'
 import Footer from './Footer'
 
-export default function Layout({ title, children }) {
+export default function Layout({ title, theme, children }) {
+
+
 
 
     return (
@@ -13,9 +15,7 @@ export default function Layout({ title, children }) {
                 <link rel="icon" href="https://ppdb.sumbarprov.go.id/sumbar.ico" />
             </Head>
             <Navbar />
-
-
-            <div>
+            <div className="">
                 {children}
             </div>
             <Footer />

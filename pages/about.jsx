@@ -1,5 +1,5 @@
 import TableData from "components/tableData"
-import { useEffect, useState } from "react"
+
 import Layout from "../components/Layout"
 
 
@@ -7,25 +7,7 @@ import Layout from "../components/Layout"
 
 
 export default function About({ data }) {
-    const [datas, setData] = useState([]);
 
-
-    const getData = async () => {
-        const formdata = new FormData()
-        formdata.append('page', 1)
-        const res = await fetch(`https://ppdb.sumbarprov.go.id/api/ppdbdata/services/get_sekolah`, {
-            method: "POST",
-            body: formdata
-        })
-        const data = await res.json()
-        setData(data)
-    }
-
-
-    useEffect(() => {
-        getData();
-
-    }, [])
 
     return (
         <Layout title="About nee">
@@ -53,6 +35,7 @@ export default function About({ data }) {
                     <tbody className="bg-gray-200">
                         {
                             data.map((pecah, key) => {
+                                console.log(key)
                                 return <TableData pecah={pecah} key={key} />
                             })
                         }
